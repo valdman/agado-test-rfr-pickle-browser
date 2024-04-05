@@ -5,6 +5,7 @@ import type {
 } from "./pickle";
 import type {
   Estimator as EstimatorTarget,
+  Root as NodeTarget,
   PickleTarget,
 } from "./pickleTarget";
 
@@ -79,7 +80,7 @@ export async function loadModel() {
       // replacement: model.replacement, // ??
       nEstimators: model.estimator_state.estimators_.length,
       // seed: model.random_state,
-      // useSampleBagging: model.bootstrap,
+      useSampleBagging: true,
       treeOptions: {
         // minNumSamples: model.min_samples_split,
         // maxDepth: model.max_depth,
@@ -97,7 +98,10 @@ export async function loadModel() {
   return result;
 }
 
-function buildTree(originalEstimator: EstimatorSource, nodeIndex: number) {
+function buildTree(
+  originalEstimator: EstimatorSource,
+  nodeIndex: number
+): NodeTarget {
   return {
     kind: "regression",
     gainFunction: "regression",
@@ -120,19 +124,18 @@ function buildTree(originalEstimator: EstimatorSource, nodeIndex: number) {
   } as const;
 }
 
-type Node = unknown;
 function buildTreeNode(
   originalEstimator: EstimatorSource,
   nodeIndex: number
-): Node | undefined {
+): NodeTarget | undefined {
   if (nodeIndex === -1) {
     return undefined;
   }
 
   return {
-    kind: "GainFunction",
-    gainFunction: "GainFunction",
-    splitFunction: "SelectionMethod",
+    kind: "regression",
+    gainFunction: "regression",
+    splitFunction: "mean",
     minNumSamples: originalEstimator.n_node_samples[nodeIndex],
     maxDepth: null,
     gainThreshold: originalEstimator.impurity[nodeIndex],

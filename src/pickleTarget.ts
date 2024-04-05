@@ -256,8 +256,8 @@ export interface Root {
   splitColumn?: number;
   gain?: number | null;
   numberSamples?: number;
-  left?: RootLeft;
-  right?: RootRight;
+  left?: Root;
+  right?: Root;
   distribution?: number;
 }
 
