@@ -4,7 +4,7 @@
 
 1. Create an in-memory object from the pickle in Python
 2. Serialize the object to JSON in format of `ml-random-forest`
-3. Spawn RFR in Browser and display the prediction via React
+3. Spawn RFR in Browser and display the prediction via React (`npm run dev`)
 
 ## Comment
 
