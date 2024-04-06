@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { loadModel, runModel } from "./loadModel";
+import { loadModel, runModel } from "./rfrRunner.ts";
 
 import "./App.css";
 
@@ -13,10 +13,13 @@ function App() {
   }
 
   async function loadAndRunRandomForest() {
-    const model = await loadModel(TEST_DATASET);
+    const modelJSON = await fetch("model_transformed.json").then((response) =>
+      response.json()
+    );
+    const model = await loadModel(modelJSON);
     setModel(model);
 
-    console.log("Model loaded", {model});
+    console.log("Model loaded", { model });
 
     const result = runModel(model, TEST_DATASET);
     setResult(result);
@@ -39,7 +42,9 @@ function App() {
         </button>
         <details style={{ width: 400, marginTop: 12 }}>
           <summary>Test dataset</summary>
-          <span style={{fontSize: 10}}>{JSON.stringify(TEST_DATASET, null, 2)}</span>
+          <span style={{ fontSize: 10 }}>
+            {JSON.stringify(TEST_DATASET, null, 2)}
+          </span>
         </details>
       </div>
     </div>
