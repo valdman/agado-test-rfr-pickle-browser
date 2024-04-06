@@ -33,4 +33,5 @@ export interface Estimator {
   impurity: number[];
   n_node_samples: number[];
   weighted_n_node_samples: number[];
+  distribution: Array<Array<number[]>>;
 }

@@ -26,7 +26,11 @@ export async function loadModel(model: RandomForestSerialized) {
       indexes,
       n: model.n,
       estimators: model.estimator_state.estimators_.map((est) => {
-        const root = buildTree(est, 0);
+        const root = buildTree(
+          est,
+          model.estimator_state.feature_importances_,
+          0
+        );
 
         return {
           name: "DTRegression",
@@ -70,25 +74,28 @@ export function runModel(model: RFRegression, dataset: number[][]) {
 
 function buildTree(
   originalEstimator: EstimatorSource,
+  featureImportances: number[],
   nodeIndex: number
 ): NodeTarget {
   return {
     kind: "regression",
     gainFunction: "regression",
     splitFunction: "mean",
-    minNumSamples: originalEstimator.n_node_samples[nodeIndex],
     maxDepth: MAX_DEPTH,
+    minNumSamples: originalEstimator.n_node_samples[nodeIndex],
     gainThreshold: originalEstimator.impurity[nodeIndex],
     splitValue: originalEstimator.threshold[nodeIndex],
-    splitColumn: originalEstimator.feature[nodeIndex],
+    splitColumn: featureImportances[nodeIndex],
     gain: originalEstimator.impurity[nodeIndex],
     numberSamples: originalEstimator.n_node_samples[nodeIndex],
     left: buildTreeNode(
       originalEstimator,
+      featureImportances,
       originalEstimator.left_child[nodeIndex]
     ),
     right: buildTreeNode(
       originalEstimator,
+      featureImportances,
       originalEstimator.right_child[nodeIndex]
     ),
   } as const;
@@ -96,6 +103,7 @@ function buildTree(
 
 function buildTreeNode(
   originalEstimator: EstimatorSource,
+  featureImportances: number[],
   nodeIndex: number
 ): NodeTarget | undefined {
   if (nodeIndex === -1) {
@@ -111,8 +119,8 @@ function buildTreeNode(
     gainThreshold: originalEstimator.impurity[nodeIndex],
     splitValue: originalEstimator.threshold[nodeIndex],
     splitColumn: originalEstimator.feature[nodeIndex],
-    gain: originalEstimator.impurity[nodeIndex],
+    gain: featureImportances[nodeIndex],
     numberSamples: originalEstimator.n_node_samples[nodeIndex],
-    distribution: originalEstimator.weighted_n_node_samples[nodeIndex],
+    distribution: originalEstimator.distribution[nodeIndex][0][0],
   } as const;
 }

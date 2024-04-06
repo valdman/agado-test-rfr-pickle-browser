@@ -20,7 +20,11 @@ export async function loadModel(model) {
       indexes,
       n: model.n,
       estimators: model.estimator_state.estimators_.map((est) => {
-        const root = buildTree(est, 0);
+        const root = buildTree(
+          est,
+          model.estimator_state.feature_importances_,
+          0
+        );
 
         return {
           name: "DTRegression",
@@ -62,30 +66,32 @@ export function runModel(model, dataset) {
   return result;
 }
 
-function buildTree(originalEstimator, nodeIndex) {
+function buildTree(originalEstimator, featureImportances, nodeIndex) {
   return {
     kind: "regression",
     gainFunction: "regression",
     splitFunction: "mean",
-    minNumSamples: originalEstimator.n_node_samples[nodeIndex],
     maxDepth: MAX_DEPTH,
+    minNumSamples: originalEstimator.n_node_samples[nodeIndex],
     gainThreshold: originalEstimator.impurity[nodeIndex],
     splitValue: originalEstimator.threshold[nodeIndex],
-    splitColumn: originalEstimator.feature[nodeIndex],
+    splitColumn: featureImportances[nodeIndex],
     gain: originalEstimator.impurity[nodeIndex],
     numberSamples: originalEstimator.n_node_samples[nodeIndex],
     left: buildTreeNode(
       originalEstimator,
+      featureImportances,
       originalEstimator.left_child[nodeIndex]
     ),
     right: buildTreeNode(
       originalEstimator,
+      featureImportances,
       originalEstimator.right_child[nodeIndex]
     ),
   };
 }
 
-function buildTreeNode(originalEstimator, nodeIndex) {
+function buildTreeNode(originalEstimator, featureImportances, nodeIndex) {
   if (nodeIndex === -1) {
     return undefined;
   }
@@ -99,8 +105,8 @@ function buildTreeNode(originalEstimator, nodeIndex) {
     gainThreshold: originalEstimator.impurity[nodeIndex],
     splitValue: originalEstimator.threshold[nodeIndex],
     splitColumn: originalEstimator.feature[nodeIndex],
-    gain: originalEstimator.impurity[nodeIndex],
+    gain: featureImportances[nodeIndex],
     numberSamples: originalEstimator.n_node_samples[nodeIndex],
-    distribution: originalEstimator.weighted_n_node_samples[nodeIndex],
+    distribution: originalEstimator.distribution[nodeIndex][0][0],
   };
 }
