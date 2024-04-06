@@ -85,8 +85,8 @@ function buildTree(
     minNumSamples: originalEstimator.n_node_samples[nodeIndex],
     gainThreshold: originalEstimator.impurity[nodeIndex],
     splitValue: originalEstimator.threshold[nodeIndex],
-    splitColumn: featureImportances[nodeIndex],
-    gain: originalEstimator.impurity[nodeIndex],
+    splitColumn: originalEstimator.feature[nodeIndex],
+    gain: featureImportances[nodeIndex],
     numberSamples: originalEstimator.n_node_samples[nodeIndex],
     left: buildTreeNode(
       originalEstimator,
