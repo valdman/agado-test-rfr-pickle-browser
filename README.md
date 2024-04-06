@@ -11,6 +11,7 @@
 - Intermediate `model.json` may contain extra fields used for debugging purposes. File structure may be optimized.
 - Current JS representation of the RF may be downloaded from the main page.
 - Original solution is written in TypeScript for eased structure mapping, nevertheless, JS version is also provided.
+- The increased precision of the JS implementation may be achieved by the original Python code re-engineering in JS. (pkg. `scikit-learn`: `class DecisionTreeClassifier`, `class ExtraTreeRegressor`)
 
 ## Main contents
 
