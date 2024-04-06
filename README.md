@@ -19,6 +19,6 @@
 - `src/App.jsx` - Entry point of the Web Application.
 - `transformers/` - Folder contains the `.pkl` and the converter from the pickle format to `.json` and the generated `model.json`. Also contains the GT pickle runner, also with generated output.
 
-## Underline React + Vite Template
+## Underlies React + Vite Template
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
