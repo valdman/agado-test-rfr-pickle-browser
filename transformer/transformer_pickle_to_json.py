@@ -40,7 +40,8 @@ def convert_to_json(obj):
                     "threshold": obj.tree_.threshold,
                     "impurity": obj.tree_.impurity,
                     "n_node_samples": obj.tree_.n_node_samples,
-                    "weighted_n_node_samples": obj.tree_.weighted_n_node_samples
+                    "weighted_n_node_samples": obj.tree_.weighted_n_node_samples,
+                    "distribution": obj.tree_.value.tolist(),
             }
 
         return {
