@@ -10,6 +10,14 @@ def convert_to_json(obj):
     if isinstance(obj, RandomForestRegressor):
         return {
             "estimator_type": "RandomForestRegressor",
+            "n": obj.n_estimators,
+            "max_features": obj.max_features,
+            "replacement": obj.bootstrap,
+            "seed": obj.random_state,
+            "use_sample_bagging": obj.oob_score,
+            "no_oob": bool(obj.oob_score),
+            "max_depth": obj.max_depth,
+            "min_num_samples": obj.min_samples_split,
             "estimator_parameters": {
                 "n_estimators": obj.n_estimators,
                 "max_depth": obj.max_depth,
@@ -64,6 +72,5 @@ class NumpyEncoder(json.JSONEncoder):
 
 model_json = json.dumps(convert_to_json(model), indent=2, cls=NumpyEncoder)
 
-# Save the JSON representation to a file
 with open('model.json', 'w') as f:
     f.write(model_json)

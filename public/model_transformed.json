@@ -1,5 +1,13 @@
 {
   "estimator_type": "RandomForestRegressor",
+  "n": 10,
+  "max_features": 1.0,
+  "replacement": true,
+  "seed": 1,
+  "use_sample_bagging": false,
+  "no_oob": false,
+  "max_depth": 100,
+  "min_num_samples": 2,
   "estimator_parameters": {
     "n_estimators": 10,
     "max_depth": 100,
