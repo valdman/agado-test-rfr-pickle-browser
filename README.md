@@ -6,6 +6,10 @@
 2. Serialize the object to JSON in format of `ml-random-forest`
 3. Spawn RFR in Browser and display the prediction via React (`npm run dev`)
 
+## Possible alternative solutions
+- Run WASM-based Python with Scikit 1.1.3 and create JS-interop.
+- Re-sample and re-train a new model in existing JS RFR implementations. Store and import re-trained model as JSON.
+
 ## Comment
 
 - Intermediate `model.json` may contain extra fields used for debugging purposes. File structure may be optimized.
